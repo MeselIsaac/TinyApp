@@ -1,0 +1,33 @@
+<!-- views/partials/header.ejs -->
+
+<nav class="navbar navbar-default" role="navigation">
+<div class="container-fluid">
+
+    <div class="navbar-header">
+        <a class="navbar-brand"
+            <span class="glyphicon glyphicon glyphicon-tree-deciduous"></span>
+            <h1><b>Tiny App</b></h1>
+             <%if (user){%>
+            <p> Logged In As: <%=user.email%></p>
+
+            <%} %>
+
+        </a>
+
+        <ul class="nav navbar-nav">
+        <%if (!user){%>
+        <div><a href="/login">Login</a> <a href="/register">Register</a></div>
+            <%} else {%>
+            <form class="form-inline" action="/logout" method="POST">
+<div><button type="submit" class="btn btn-primary">Logout</button> <a href="/register">Register</a></div>
+            <%} %>
+              </form>
+
+        </ul>
+    </div>
+
+</div>
+</nav>
+
+
+
