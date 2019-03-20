@@ -4,9 +4,9 @@ const bcrypt = require('bcrypt');
 var app = express();
 var PORT = 8080;
 
-const bodyParser = require("body-parser");
+const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
-app.set("view engine", "ejs");
+app.set('view engine', 'ejs');
 app.use(cookieSession({
   name: 'session',
   keys: ['keyboard'],
@@ -43,7 +43,7 @@ function idLookup(email) {
 }
 
 function passLookup(password, email) {
-  var compare = users[idLookup(email)].password;
+  let compare = users[idLookup(email)].password;
   if (bcrypt.compareSync(password, compare) === true) {
     return true;
   } else {
@@ -62,63 +62,35 @@ function urlsForUser(id) {
   return filteredURLDatabase;
 }
 
-var urlDatabase = {
-
-  "b2xVn2": {
-    longURL: "http://www.lighthouselabs.ca",
-    userID: "randomID"
-  },
-
-  "9sm5xK": {
-    longURL: "http://www.google.com",
-    userID: "randomID2"
-  }
+const urlDatabase = {
 
 };
 
 const users = {
-  "userRandomID": {
-    id: "userRandomID",
-    email: "user@example.com",
-    password: "purple-monkey-dinosaur"
-  },
- "user2RandomID": {
-    id: "user2RandomID",
-    email: "user2@example.com",
-    password: "dishwasher-funk"
-  }
-}
+
+};
 
 app.get("/", (request, response) => {
   response.redirect("urls/");
 });
 
-app.get("/urls.json", (request, response) => {
-  response.send(urlDatabase);
-})
-
-app.get("/hello", (request, response) => {
-  response.json("<html><body>Hello <b>World</b></body></html>\n")
-})
-
 app.get("/urls", (request, response) => {
-  let templateVars = {
+  const templateVars = {
     urls: urlsForUser(request.session.user_id),
     user: users[request.session.user_id]
   };
-
 
   response.render("urls_index", templateVars);
 })
 
 //SHORT URL GENERATOR THAT TIES TO USER ID
 app.post("/urls", (request, response) => {
-  var num = generateRandomString()
+  const num = generateRandomString()
   urlDatabase[num] = {
     longURL: request.body.longURL,
     userID: users[request.session.user_id].id
-  }
-  response.redirect("/urls/"+num)
+  };
+  response.redirect("/urls/"+num);
 });
 
 // LOGIN POST
@@ -131,17 +103,12 @@ app.post("/login", (request, response) => {
     request.session.user_id = idLookup(request.body.email);
   }
 
-  let templateVars = {
-    urls: urlsForUser(request.session.user_id),
-    user: users[request.session.user_id]
-  };
-
   response.redirect("/urls");
 
 })
 
 app.get("/login", (request, response) => {
-  let templateVars = {
+  const templateVars = {
     urls: urlsForUser(request.session.user_id),
     user: users[request.session.user_id]
   };
@@ -157,7 +124,7 @@ app.post("/logout", (request, response) => {
 
 // RENDER REGISTRATION TEMPLATE
 app.get("/register", (request, response) => {
-  let templateVars = {
+  const templateVars = {
     urls: urlsForUser(request.session.user_id),
     user: users[request.session.user_id]
   };
@@ -167,9 +134,9 @@ app.get("/register", (request, response) => {
 //REGISTRATION HANDLER w/BCRYPT FUNCTIONALITY AND COOKIE SETTING
 app.post("/register", (request, response) => {
   if (!request.body.email || !request.body.password) {
-    response.send("ERROR 404 Please enter email and/or password");
+    response.status(404).end("Please enter email and/or password");
   } else if (emailLookup(request.body.email)) {
-    response.send("ERROR 404 Email address already taken")
+    response.status(404).end("Email address already taken")
   } else {
     const hashedPassword = bcrypt.hashSync(request.body.password, 10);
     genID = generateRandomString();
@@ -189,7 +156,7 @@ app.get("/urls/new", (request, response) => {
   if (!request.session.user_id) {
     response.redirect("/login");
   } else {
-    let templateVars = {
+    const templateVars = {
       urls: urlsForUser(request.session.user_id),
       user: users[request.session.user_id]
     };
@@ -209,7 +176,7 @@ app.post("/urls/:shortURL/delete", (request, response) => {
 
 //SHORT URL EDIT PAGE
 app.get("/urls/:shortURL", (request, response) => {
-  let templateVars = {
+  const templateVars = {
     shortURL: request.params.shortURL,
     longURL: urlDatabase[request.params.shortURL].longURL ,
     user: users[request.session.user_id]
