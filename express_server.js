@@ -90,7 +90,7 @@ const users = {
 }
 
 app.get("/", (request, response) => {
-  response.send("Hello");
+  response.redirect("urls/");
 });
 
 app.get("/urls.json", (request, response) => {
