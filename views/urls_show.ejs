@@ -22,7 +22,7 @@
 
 
 
- <h3><b>TinyURL for <%= shortURL%></b></h3>
+ <h3><b>TinyURL for <a href="/u/<%= shortURL%>"> <%= shortURL%></a></b></h3>
 <form method="POST" action="/urls/<%= shortURL%>"><input type="text" name="longURL" value="<%= longURL%>"><button type="submit">Update</button></form>
 
 
