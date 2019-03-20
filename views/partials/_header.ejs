@@ -6,7 +6,7 @@
     <div class="navbar-header">
         <a class="navbar-brand"
             <span class="glyphicon glyphicon glyphicon-tree-deciduous"></span>
-            <h1><b>Tiny App</b></h1>
+            <h1><b><a href="/urls">Tiny App</a></b></h1>
              <%if (user){%>
             <p> Logged In As: <%=user.email%></p>
 
@@ -19,7 +19,7 @@
         <div><a href="/login">Login</a> <a href="/register">Register</a></div>
             <%} else {%>
             <form class="form-inline" action="/logout" method="POST">
-<div><button type="submit" class="btn btn-primary">Logout</button> <a href="/register">Register</a></div>
+<div><button type="submit" class="btn btn-primary">Logout</button> <a href="/urls/new">Create Tiny Url</a></div>
             <%} %>
               </form>
 
